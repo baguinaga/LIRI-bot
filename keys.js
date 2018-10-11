@@ -8,3 +8,7 @@ exports.spotify = {
 exports.omdb = {
   api: process.env.OMDB_API_KEY
 }
+
+exports.bandsintown = {
+  api: process.env.BIT_API_KEY
+}
