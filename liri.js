@@ -32,9 +32,32 @@ const concertThis = function (arg) {
         `);
       }
     }
+  })
+}
+
+const spotifyThis = function () {
+
+  spotify.search({
+    type: 'track',
+    query: 'All the Small Things',
+    limit: "4"
+  }, function (err, data) {
+    if (err) {
+      return console.log('Error occurred: ' + err);
+    }
+
+    const album = (data["tracks"]["items"][0]);
+    const artist = album["artists"][0].name;
+    const track = album["name"];
+
+    console.log(artist, track);
   });
 }
 
 if (command === "concert-this") {
   concertThis(commandArg);
+} else if (command === "spotify-this-song") {
+  spotifyThis(commandArg);
 }
+
+spotifyThis();
