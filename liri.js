@@ -62,16 +62,48 @@ The song "${track}", by ${artist} appears on ${albumName}.
   });
 }
 
+const movieThis = function(arg) {
+  const movie = arg ? arg : "mr nobody"
+  const url = `https://www.omdbapi.com/?t=${movie}&y=&plot=short&apikey=${omdb}`;
+
+  request(url, function (error, response, body) {
+    if (error) {
+      return console.log(error);
+    } else if (!error && response.statusCode === 200) {
+      const title = JSON.parse(body).Title;
+      const year = JSON.parse(body).Year;
+      const rated = JSON.parse(body).Rated
+      const rating = JSON.parse(body).Ratings[1].Value;
+      const country = JSON.parse(body).Country;
+      const language = JSON.parse(body).Language;
+      const plot = JSON.parse(body).Plot;
+      const actors = JSON.parse(body).Actors;
+
+      console.log(`
+Title: ${title}
+Release Year: ${year}
+Rated: ${rated}
+Rotten Tomatoes Rating: ${rating}
+Country: ${country}
+Original Language: ${language}
+Starring: ${actors}
+Plot: ${plot}
+      `)
+    }
+  })
+}
+
 const doThis = function () {
   fs.readFile("random.txt", "utf8", function (error, data) {
     const dataArr = data.split(",");
     const fileCommand = dataArr[0];
-    const fileArgument= dataArr[1];
+    const fileArgument = dataArr[1];
 
     if (error) {
       return console.log(error);
+    } else {
+      liriCommands(fileCommand, fileArgument);
     }
-    liriCommands(fileCommand, fileArgument);
   });
 }
 
