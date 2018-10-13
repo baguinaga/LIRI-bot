@@ -19,14 +19,17 @@ const concertThis = function (arg) {
     if (error) {
       return console.log(error);
     } else if (!error && response.statusCode === 200) {
+      const eventNum = (JSON.parse(body).length > 4) ? 4 : JSON.parse(body).length;
+
       console.log(`
-${arg} will be playing at the following venues:`);
-      for (let i = 0; i < JSON.parse(body).length; i++) {
+${arg.replace(/\b\w/g, l => l.toUpperCase())} will be playing at the following venues:
+`);
+      for (let i = 0; i < eventNum; i++) {
         const venue = JSON.parse(body)[i].venue;
         const date = moment(JSON.parse(body)[i].datetime, "YYYY-MM-DDTHH:mm:ss").format("dddd, MMMM Do YYYY h:mm:ss a");
-        console.log(`
-${venue.name} in ${venue.city}, ${venue.country} on ${date}`);
+        console.log(`${venue.name} in ${venue.city}, ${venue.country} on ${date}`);
       }
+      console.log(``)
     }
   })
 }
@@ -49,21 +52,22 @@ const spotifyThis = function (arg) {
       const albumName = firstAlbum["album"]["name"];
 
       console.log(`
-The song "${track}", by ${artist} appears on ${albumName}.
-`);
+Song: "${track}"
+By: ${artist}
+Album: ${albumName}`);
       if (url !== null) {
-        console.log(`This song can be heard on the Spotify app: ${url}.
+        console.log(`Listen to this song on the Spotify app: ${url}.
 `)
       } else {
-        console.log(`Sorry, we couldn't find a link to the song.
+        console.log(`Sorry, no song link was available.
 `)
       }
     }
   });
 }
 
-const movieThis = function(arg) {
-  const movie = arg ? arg : "mr nobody"
+const movieThis = function (arg) {
+  const movie = arg ? arg : "mr nobody";
   const url = `https://www.omdbapi.com/?t=${movie}&y=&plot=short&apikey=${omdb}`;
 
   request(url, function (error, response, body) {
@@ -88,7 +92,7 @@ Country: ${country}
 Original Language: ${language}
 Starring: ${actors}
 Plot: ${plot}
-      `)
+`)
     }
   })
 }
