@@ -44,7 +44,7 @@ const spotifyThis = function (arg) {
   }, function (err, data) {
     if (err) {
       return console.log(err);
-    } else {
+    } else if (data.tracks.items.length !== 0) {
       const firstAlbum = (data["tracks"]["items"][0]);
       const artist = firstAlbum["artists"][0].name;
       const track = firstAlbum["name"];
@@ -55,13 +55,11 @@ const spotifyThis = function (arg) {
 Song: "${track}"
 By: ${artist}
 Album: ${albumName}`);
-      if (url !== null) {
-        console.log(`Listen to this song on the Spotify app: ${url}.
+      console.log(url !== null ? `Listen to this song on the Spotify app: ${url}.
+` : `Sorry, no song link was available.
 `)
-      } else {
-        console.log(`Sorry, no song link was available.
-`)
-      }
+    } else {
+      return console.log(`No results available for that search term.`)
     }
   });
 }
