@@ -24,8 +24,8 @@ const concertThis = function (arg) {
       const eventNum = (JSON.parse(body).length > 4) ? 4 : JSON.parse(body).length;
 
       console.log(`
-${arg.replace(/\b\w/g, l => l.toUpperCase())} will be playing at the following venues:
-`);
+${artist.replace(/\b\w/g, l => l.toUpperCase())} will be playing at the following venues:
+`)
       for (let i = 0; i < eventNum; i++) {
         const venue = JSON.parse(body)[i].venue;
         const date = moment(JSON.parse(body)[i].datetime, "YYYY-MM-DDTHH:mm:ss").format("dddd, MMMM Do YYYY h:mm:ss a");
@@ -165,4 +165,3 @@ inquirer.prompt([{
     }
   })
 })
-// liriCommands(command, cmdArgument);
