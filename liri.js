@@ -9,9 +9,7 @@ const inquirer = require("inquirer");
 
 const spotify = new Spotify(keys.spotify);
 const omdb = keys.omdb["api"];
-const bandsintown = keys.bandsintown["api"]
-const command = process.argv[2];
-const cmdArgument = process.argv[3];
+const bandsintown = keys.bandsintown["api"];
 
 const concertThis = function (arg) {
   const artist = arg ? arg : "Of Montreal";
@@ -32,6 +30,7 @@ ${artist.replace(/\b\w/g, l => l.toUpperCase())} will be playing at the followin
         console.log(`${venue.name} in ${venue.city}, ${venue.country} on ${date}`);
       }
       console.log(``)
+      liriMenu();
     }
   })
 }
@@ -63,6 +62,7 @@ Album: ${albumName}`);
     } else {
       return console.log(`No results available for that search term.`)
     }
+    liriMenu();
   });
 }
 
@@ -94,7 +94,9 @@ Starring: ${actors}
 Plot: ${plot}
 `)
     }
+    liriMenu();
   })
+
 }
 
 const doThis = function () {
@@ -106,7 +108,8 @@ const doThis = function () {
     if (error) {
       return console.log(error);
     } else {
-      liriCommands(fileCommand, fileArgument);
+      console.log(fileCommand, fileArgument);
+      return liriCommands(fileCommand, fileArgument);
     }
   });
 }
@@ -125,43 +128,42 @@ const liriCommands = function (cmd, arg) {
     case "Read 'random.txt'":
       doThis()
       break;
-    default:
-      console.log(`
-Please enter a proper command. Such as: 
-"concert-this", "spotify-this-song", "movie-this", or "do-what-it-says"
-`) // outdated, will be removed
   }
 }
 
-inquirer.prompt([{
-  type: "list",
-  name: "userCommand",
-  message: "Hello, I'm LIRI. Please select one my functions below.",
-  choices: ["Concert Details", "Song / Album Information", "Movie Information", "Read 'random.txt'"]
-}]).then(command => {
-  if (command.userCommand === "Read 'random.txt'") {
-    console.log("Okay. Doing what 'random.txt' says.");
-    return liriCommands(command.userCommand);
-  }
+const liriMenu = () => {
   inquirer.prompt([{
-    type: "input",
-    name: "userArg",
-    message: "Okay. Would you like to pass an argument?",
-    validate: function (arg) {
-      if (isNaN(arg) || arg === "") {
-        return true;
-      } else {
-        console.log("Please enter a string argument.");
-        return false;
-      }
-    }
-  }]).then(arg => {
-    if (arg.userArg === "") {
-      console.log("No argument received. Using default arguments.")
+    type: "list",
+    name: "userCommand",
+    message: "Hello, I'm LIRI. Please select one my functions below.",
+    choices: ["Concert Details", "Song / Album Information", "Movie Information", "Read 'random.txt'"]
+  }]).then(command => {
+    if (command.userCommand === "Read 'random.txt'") {
+      console.log("Okay. Doing what 'random.txt' says.");
       return liriCommands(command.userCommand);
-    } else {
-      console.log("Understood. Here are your results:");
-      return liriCommands(command.userCommand, arg.userArg);
     }
+    inquirer.prompt([{
+      type: "input",
+      name: "userArg",
+      message: "Okay. Would you like to pass an argument? Default values are available.",
+      validate: function (arg) {
+        if (isNaN(arg) || arg === "") {
+          return true;
+        } else {
+          console.log("Please enter a string argument.");
+          return false;
+        }
+      }
+    }]).then(arg => {
+      if (arg.userArg === "") {
+        console.log("No argument received. Using default arguments.")
+        return liriCommands(command.userCommand);
+      } else {
+        console.log("Understood. Here are your results:");
+        return liriCommands(command.userCommand, arg.userArg);
+      }
+    })
   })
-})
+}
+
+liriMenu();

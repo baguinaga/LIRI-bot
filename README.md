@@ -2,11 +2,11 @@
 
 ## Description
 
-LIRI-bot (*Language Interpretation and Recognition Interface*) is a CLI (*Command Line Interface*) app built through the use of node.js which, not unlike it's SIRI namesake, accepts user input and facilitates an appropriate response. In the case of LIRI user input comes in the form of command line arguments which, that this context, are further defined as either a "command" or a "command argument". LIRI accepts these commands and responds with the appropriate predefined function.
+LIRI-bot (*Language Interpretation and Recognition Interface*) is a CLI (*Command Line Interface*) app built through the use of node.js which, not unlike it's SIRI namesake, accepts user input and facilitates an appropriate response. In the case of LIRI user input comes in the form of command line arguments which are obtained through the use of inquirer.js in a rudimentary user interface. LIRI then takes the user's input and responds with the appropriate selected function.
 
 ## Installation
 
-In order to run LIRI-bot simply fork this repository and within the cloned directory install it's node dependencies with:
+In order to run LIRI-bot simply fork this repository and within it's directory install it's node dependencies with:
 
 ```js
 npm install
@@ -42,6 +42,14 @@ node liri.js 'do-what-it-says'
 ```
 
 The 'do-what-it-says' command will run the first command that is logged in the random.txt file.
+
+## Changes 
+
+#### Version 1.1 
+- Created user interface with Inquirer package
+- Changed the name of LIRI commands for ease of reading and clarity.
+- Included a default case of concert queries.
+
 
 ## Future Developments
 

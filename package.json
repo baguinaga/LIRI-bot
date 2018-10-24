@@ -1,7 +1,7 @@
 {
   "name": "liri-bot",
-  "version": "1.0.0",
-  "description": "LIRI-bot (Language Interpretation and Recognition Interface) is a CLI (Command Line Interface) app which, not unlike it's SIRI namesake, accepts user input and facilitates an appropriate response. In the case of LIRI user input comes in the form of command line arguments which, within this context, are further defined as either a 'command' or a 'command argument'. LIRI accepts these commands and responds with the appropriate predefined function.",
+  "version": "1.1.0",
+  "description": "LIRI-bot (Language Interpretation and Recognition Interface) is a CLI (Command Line Interface) app which, not unlike it's SIRI namesake, accepts user input and facilitates an appropriate response.",
   "main": "keys.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
