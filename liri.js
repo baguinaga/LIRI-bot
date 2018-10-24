@@ -5,6 +5,8 @@ const request = require("request");
 const Spotify = require("node-spotify-api");
 const moment = require("moment");
 const keys = require("./keys.js");
+const inquirer = require("inquirer");
+
 const spotify = new Spotify(keys.spotify);
 const omdb = keys.omdb["api"];
 const bandsintown = keys.bandsintown["api"]
@@ -12,7 +14,7 @@ const command = process.argv[2];
 const cmdArgument = process.argv[3];
 
 const concertThis = function (arg) {
-  const artist = arg;
+  const artist = arg ? arg : "Of Montreal";
   const url = `https://rest.bandsintown.com/artists/${artist}/events?app_id=${bandsintown}`;
 
   request(url, function (error, response, body) {
@@ -111,24 +113,56 @@ const doThis = function () {
 
 const liriCommands = function (cmd, arg) {
   switch (cmd) {
-    case "concert-this":
+    case "Concert Details":
       concertThis(arg)
       break;
-    case "spotify-this-song":
+    case "Song / Album Information":
       spotifyThis(arg)
       break;
-    case "movie-this":
+    case "Movie Information":
       movieThis(arg)
       break;
-    case "do-what-it-says":
+    case "Read 'random.txt'":
       doThis()
       break;
     default:
       console.log(`
 Please enter a proper command. Such as: 
 "concert-this", "spotify-this-song", "movie-this", or "do-what-it-says"
-`)
+`) // outdated, will be removed
   }
 }
 
-liriCommands(command, cmdArgument);
+inquirer.prompt([{
+  type: "list",
+  name: "userCommand",
+  message: "Hello, I'm LIRI. Please select one my functions below.",
+  choices: ["Concert Details", "Song / Album Information", "Movie Information", "Read 'random.txt'"]
+}]).then(command => {
+  if (command.userCommand === "Read 'random.txt'") {
+    console.log("Okay. Doing what 'random.txt' says.");
+    return liriCommands(command.userCommand);
+  }
+  inquirer.prompt([{
+    type: "input",
+    name: "userArg",
+    message: "Okay. Would you like to pass an argument?",
+    validate: function (arg) {
+      if (isNaN(arg) || arg === "") {
+        return true;
+      } else {
+        console.log("Please enter a string argument.");
+        return false;
+      }
+    }
+  }]).then(arg => {
+    if (arg.userArg === "") {
+      console.log("No argument received. Using default arguments.")
+      return liriCommands(command.userCommand);
+    } else {
+      console.log("Understood. Here are your results:");
+      return liriCommands(command.userCommand, arg.userArg);
+    }
+  })
+})
+// liriCommands(command, cmdArgument);
