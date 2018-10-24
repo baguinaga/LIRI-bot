@@ -1,5 +1,7 @@
 # LIRI-bot
 
+![LIRI Demo](demo.gif)
+
 ## Description
 
 LIRI-bot (*Language Interpretation and Recognition Interface*) is a CLI (*Command Line Interface*) app built through the use of node.js which, not unlike it's SIRI namesake, accepts user input and facilitates an appropriate response. In the case of LIRI user input comes in the form of command line arguments which are obtained through the use of inquirer.js in a rudimentary user interface. LIRI then takes the user's input and responds with the appropriate selected function.
